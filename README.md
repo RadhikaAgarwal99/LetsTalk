@@ -1,5 +1,5 @@
 # Chatting Android App
-Radhika Agarwal(2000081)
+Radhika Agarwal(2000081), 
 Thumuluri Sai Sarika (2000082)
 
 Functions:
