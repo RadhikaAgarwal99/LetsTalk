@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "530020084144",
+    "firebase_url": "https://tsweletstalk.firebaseio.com",
+    "project_id": "tsweletstalk",
+    "storage_bucket": "tsweletstalk.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:530020084144:android:1306f56e489114a9",
+        "android_client_info": {
+          "package_name": "com.project.letstalk"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "530020084144-j6p2qfcgorm9l18jb9s58sbudfk7aldh.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.project.letstalk",
+            "certificate_hash": "aaae6fb7373e5d3e44695598c56d1ed370d09004"
+          }
+        },
+        {
+          "client_id": "530020084144-75q16piot688k4pna39mogj1c323misi.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCdD8o3yPhKHYLGq23iXYuckwfsNoAqsQo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "530020084144-75q16piot688k4pna39mogj1c323misi.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
