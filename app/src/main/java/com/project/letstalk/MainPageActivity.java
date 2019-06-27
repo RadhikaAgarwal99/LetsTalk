@@ -1,8 +1,11 @@
 package com.project.letstalk;
 
 import android.Manifest;
+import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -12,11 +15,6 @@ import androidx.viewpager.widget.ViewPager;
 
 import com.google.android.material.tabs.TabLayout;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-
-import java.util.HashMap;
 
 public class MainPageActivity extends AppCompatActivity {
     private RecyclerView mChatList;
@@ -50,10 +48,13 @@ public class MainPageActivity extends AppCompatActivity {
 
         getPermissions();
     }
-
+/*
     private void status(String status) {
         FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
-        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("user").child(firebaseUser.getUid());
+        DatabaseReference reference = null;
+        if(firebaseUser != null && firebaseUser.getUid() != null) {
+            reference = FirebaseDatabase.getInstance().getReference("user").child(firebaseUser.getUid());
+        }
 
         HashMap<String, Object> hashMap = new HashMap<>();
         hashMap.put("status", status);
@@ -71,10 +72,26 @@ public class MainPageActivity extends AppCompatActivity {
         super.onPause();
         status("offline");
     }
-
+*/
     private void getPermissions() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             requestPermissions(new String[]{Manifest.permission.WRITE_CONTACTS, Manifest.permission.READ_CONTACTS}, 1);
         }
+    }
+
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu, menu);
+        return true;
+    }
+
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.logout:
+                FirebaseAuth.getInstance().signOut();
+
+                startActivity(new Intent(MainPageActivity.this, LoginActivity.class));
+                return true;
+        }
+        return false;
     }
 }

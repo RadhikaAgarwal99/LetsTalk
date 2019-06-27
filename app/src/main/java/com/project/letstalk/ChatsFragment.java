@@ -98,13 +98,14 @@ public class ChatsFragment extends Fragment {
                 mUsers.clear();
                 for(DataSnapshot snapshot : dataSnapshot.getChildren()) {
                     String userid = snapshot.getKey();
+                 //   Object obj = snapshot.getChildren();
                     UserObject user = snapshot.getValue(UserObject.class);
 
                     for(Chatlist chatlist : usersList) {
 
                         if(userid != null && userid.equals(chatlist.getId())) {
                             user.setName(getContactName(user.getPhone(), getContext()));
-                  //          user.setUid(userid);
+                            user.setUid(userid);
                             mUsers.add(user);
                         }
                     }
