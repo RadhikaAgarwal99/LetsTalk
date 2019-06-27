@@ -1,67 +1,87 @@
 \documentclass{beamer}
+%\documentclass[presentation]{beamer}
+
+\usecolortheme{Imperial}
+ 
 \usepackage[utf8]{inputenc}
-\usetheme{Madrid}
+\usepackage[UKenglish]{babel}
+\usepackage{booktabs}
+\usepackage{caption}
+\usepackage{subcaption}
+\usepackage{graphicx}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{epstopdf}
+
+% complying UK date format, i.e. 1 January 2001
+
+
+% Imperial College Logo, not to be changed!
+--------------------------------------------------------------
+
+
+
+
+%Information to be included in the title page:
 \title{LetsTalk}
+
+
 \author{Radhika Agarwal\\
  Sarika Thumuluri}
-\date{\today}
+ \date{\today}
+
+\addtobeamertemplate{navigation symbols}{}{%
+    \usebeamerfont{footline}%
+    \usebeamercolor[fg]{footline}%
+    \hspace{1em}%
+    \insertframenumber/\inserttotalframenumber
+}
 
 \begin{document}
 
-\maketitle
-
+\frame{\titlepage}
+ 
 
 
 \begin{frame}{About the project}
 User will be able to:
-\begin{itemize}
-\item Create a profile
-\item Sync contacts
-\item Start one to one chat
-\item Create a group chat
-\item Send images across chats
-\end{itemize}
+    \begin{itemize}
+        \item Create a profile 
+        \pause
+        \item Sync contacts
+        \pause
+        \item Start one to one chat
+        \pause
+        \item Create a group chat 
+        \pause
+        \item Send images across chats 
+    \end{itemize}
 
 \end{frame}
+
 
 \begin{frame}{Tools and technologies used}
 \begin{itemize}
 \item Android studio
-\item FireBase
+\item Firebase
 \end{itemize}
 \end{frame}
+
 
 \begin{frame}{Future scope of the project}
 % \textbf{Target audience:} Anyone can use the app\newline
 
-\textbf{Extended features to implement:}\newline
+\textbf{Extended features to implement:}\newline\pause
 \begin{itemize}
 \item Speech to text
+\pause
 \item Sending voice recordings
+\pause
 \item Sending videos
 \end{itemize}
 \end{frame}
 
- \begin{frame}{Progress as on June 20}
-\begin{enumerate}
-\item Read about:
-\begin{itemize}
-\item Basic concepts about Activity
-\item Types of Activity
-\item Various widgets
-\end{itemize}
-\item Explored various options for using emulators
-\end{enumerate}
-
-\end{frame}
-\begin{frame}{Progress as on June 25}
-\begin{itemize}
-\item Enabled user authentication using firebase
-\item Created the sign up page
-\item Synced contacts
-\item Checked if contact is also a user of the app
-\end{itemize}
-\end{frame}
 
 \begin{frame}{Progress as on June 25}
 \begin{itemize}
@@ -73,6 +93,49 @@ User will be able to:
 \item Displaying messages
 \end{itemize}
 \end{frame}
-\begin{frame}{Discussions}
+
+\begin{frame}{Progress as on June 26}
+\begin{itemize}
+    \item Added Country Code
+    \item Worked on the GUI of login page
+\end{itemize}
+    
+\end{frame}
+\begin{frame}
+\begin{figure}[H]
+\centering
+\includegraphics[width=50mm]{Screenshot1.png}
+\end{figure}
+
+\end{frame}
+
+\begin{frame}
+\begin{figure}[H]
+\centering
+\includegraphics[width=50mm]{Screenshot2.png}
+\end{figure}
+\end{frame}
+\begin{frame}{}
+\begin{itemize}
+    \item Implemented fragments
+    \item Displaying contacts in the contacts fragment
+\end{itemize}
+    
+\end{frame}
+\begin{frame}
+\begin{figure}[H]
+\centering
+\includegraphics[width=50mm]{Screenshot3.png}
+\end{figure}
+\end{frame}
+
+
+\begin{frame}
+\textbf{Discussions}
 \end{frame}
 \end{document}
+
+
+ 
+
+
