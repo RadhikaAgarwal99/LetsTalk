@@ -4,11 +4,9 @@ Radhika Agarwal(2000081), Thumuluri Sai Sarika (2000082)
 
 Functions:
 
-1. Creating user profile
+1. User authentication
 2. Syncing the contacts with the app
-3. Starting one to one chat
-4. Creating a group chat
-5. Sending images across chats
+3. One to one chat
 
 Tools and Technologies used:
 
