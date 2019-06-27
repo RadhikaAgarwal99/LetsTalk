@@ -49,14 +49,28 @@
         android:background="@drawable/flag_transparent"
         android:layout_alignParentBottom="true">
 
+
         <EditText
             android:layout_width="match_parent"
-            android:layout_height="45dp"
+            android:layout_height="wrap_content"
+            android:textSize="25dp"
             android:id="@+id/text_send"
             android:hint="Type a message.."
-            android:layout_toLeftOf="@+id/btn_send"
+            android:ems="10"
+            android:layout_toLeftOf="@+id/btnSpeak"
             android:background="@drawable/rounded_edittext"
-            android:layout_centerVertical="true"/>
+            android:layout_centerVertical="true" >
+
+        </EditText>
+
+        <ImageButton
+            android:id="@+id/btnSpeak"
+            android:layout_width="40dp"
+            android:layout_height="45dp"
+            android:layout_marginRight="0dp"
+            android:layout_toLeftOf="@+id/btn_send"
+            android:background="@drawable/ic_mic"
+            tools:ignore="OnClick" />
 
         <ImageButton
             android:layout_width="40dp"

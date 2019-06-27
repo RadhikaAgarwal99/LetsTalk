@@ -2,6 +2,7 @@ package com.project.letstalk;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.speech.RecognizerIntent;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
@@ -10,6 +11,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -28,6 +30,7 @@ import com.project.letstalk.User.UserObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Locale;
 
 public class ChatActivity extends AppCompatActivity {
 
@@ -37,6 +40,7 @@ public class ChatActivity extends AppCompatActivity {
     FirebaseUser fuser;
     DatabaseReference reference;
 
+    ImageButton btnSpeak;
     ImageButton btn_send;
     EditText text_send;
 
@@ -71,6 +75,7 @@ public class ChatActivity extends AppCompatActivity {
         username = findViewById(R.id.username);
         btn_send = findViewById(R.id.btn_send);
         text_send = findViewById(R.id.text_send);
+        btnSpeak = findViewById(R.id.btnSpeak);
 
         intent = getIntent();
         String userName = intent.getStringExtra("userName");
@@ -94,6 +99,13 @@ public class ChatActivity extends AppCompatActivity {
             }
         });
 
+        btnSpeak.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                getSpeechInput();
+            }
+        });
+
         if(userid != null) {
             reference = FirebaseDatabase.getInstance().getReference("user").child(userid);
 
@@ -114,6 +126,32 @@ public class ChatActivity extends AppCompatActivity {
                 }
 
             });
+        }
+    }
+
+    public void getSpeechInput() {
+        Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
+        intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
+        intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, Locale.getDefault());
+
+        if(intent.resolveActivity(getPackageManager()) != null){
+            startActivityForResult(intent, 10);
+        } else {
+            Toast.makeText(this, "Your device doesn't support speech input", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        switch (requestCode) {
+            case 10:
+                if(resultCode == RESULT_OK && data != null) {
+                    ArrayList<String> result = data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
+                    text_send.setText(result.get(0));
+                }
+                break;
         }
     }
 
@@ -148,40 +186,8 @@ public class ChatActivity extends AppCompatActivity {
 
                 }
 
-
             });
 
-            final DatabaseReference chatRef1 = FirebaseDatabase.getInstance().getReference("ChatList")
-
-                    .child(receiver).child(fuser.getUid());
-
-            chatRef1.addListenerForSingleValueEvent(new ValueEventListener() {
-
-                @Override
-
-                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-
-                    if(!dataSnapshot.exists())
-
-                    {
-
-                        chatRef1.child("id").setValue(fuser.getUid());
-
-                    }
-
-                }
-
-
-
-                @Override
-
-                public void onCancelled(@NonNull DatabaseError databaseError) {
-
-
-
-                }
-
-            });
         }
     }
 
