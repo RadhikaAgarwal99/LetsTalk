@@ -7,6 +7,7 @@ Functions:
 1. User authentication
 2. Syncing the contacts with the app
 3. One to one chat
+4. Speech to text
 
 Tools and Technologies used:
 
