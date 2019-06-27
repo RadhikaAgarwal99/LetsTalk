@@ -1,111 +1,75 @@
 package com.project.letstalk;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.Manifest;
-import android.annotation.SuppressLint;
-import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
-import android.view.View;
-import android.widget.Button;
-import android.widget.LinearLayout;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.fragment.app.FragmentManager;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.viewpager.widget.ViewPager;
+
+import com.google.android.material.tabs.TabLayout;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
-import com.project.letstalk.Chat.ChatListAdapter;
-import com.project.letstalk.Chat.ChatObject;
 
-import java.util.ArrayList;
+import java.util.HashMap;
 
 public class MainPageActivity extends AppCompatActivity {
     private RecyclerView mChatList;
     private RecyclerView.Adapter mChatListAdapter;
     private RecyclerView.LayoutManager mChatListLayoutManager;
 
-    ArrayList<ChatObject> chatList;
+    private static FragmentManager fragmentManager;
+
+    private Toolbar mToolbar;
+    private ViewPager viewPager;
+    private TabLayout tabLayout;
+    private TabsAccessorAdapter tabsAccessorAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_page);
 
-        Button mLogout = findViewById(R.id.logout);
-        Button mFindUser = findViewById(R.id.findUser);
+        mToolbar = (Toolbar) findViewById(R.id.login_page_toolbar);
+        setSupportActionBar(mToolbar);
+        getSupportActionBar().setTitle("LetsTalk");
 
-        mFindUser.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivity(new Intent(getApplicationContext(), FindUserActivity.class));
-            }
-        });
+        viewPager = (ViewPager) findViewById(R.id.main_tabs_pager);
+        tabsAccessorAdapter = new TabsAccessorAdapter(getSupportFragmentManager());
+        viewPager.setAdapter(tabsAccessorAdapter);
 
+        tabLayout = (TabLayout) findViewById(R.id.main_tabs);
+        tabLayout.setupWithViewPager(viewPager);
 
-
-        mLogout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                FirebaseAuth.getInstance().signOut();
-                Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                startActivity(intent);
-                finish();
-                return;
-            }
-        });
+        viewPager.setOffscreenPageLimit(3);
 
         getPermissions();
-        initializeRecyclerView();
-        getUserChatList();
     }
 
-    private void getUserChatList() {
-        DatabaseReference mUserChatDB = FirebaseDatabase.getInstance().getReference().child("user").child(FirebaseAuth.getInstance().getUid()).child("chat");
+    private void status(String status) {
+        FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("user").child(firebaseUser.getUid());
 
-        mUserChatDB.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                if(dataSnapshot.exists()) {
-                    for(DataSnapshot childSnapshot : dataSnapshot.getChildren()) {
-                        ChatObject mChat = new ChatObject(childSnapshot.getKey());
-
-                        boolean exists = false;
-                        for(ChatObject mChatIterator : chatList) {
-                            if(mChatIterator.getChatId().equals(mChat.getChatId())) {
-                                exists = true;
-                            }
-                        }
-
-                        if(exists) continue;
-                        chatList.add(mChat);
-                        mChatListAdapter.notifyDataSetChanged();
-                    }
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) { }
-        });
+        HashMap<String, Object> hashMap = new HashMap<>();
+        hashMap.put("status", status);
+        reference.updateChildren(hashMap);
     }
 
+    protected void onResume() {
 
-    @SuppressLint("WrongConstant")
-    private void initializeRecyclerView() {
-        chatList = new ArrayList<>();
-        mChatList = findViewById(R.id.chatList);
-        mChatList.setNestedScrollingEnabled(false);
-        mChatList.setHasFixedSize(false);
-        mChatListLayoutManager = new LinearLayoutManager(getApplicationContext(), LinearLayout.VERTICAL, false);
-        mChatList.setLayoutManager(mChatListLayoutManager);
-        mChatListAdapter = new ChatListAdapter(chatList);
-        mChatList.setAdapter(mChatListAdapter);
+        super.onResume();
+        status("online");
+    }
+
+    protected void onPause() {
+
+        super.onPause();
+        status("offline");
     }
 
     private void getPermissions() {

@@ -1,13 +1,16 @@
 package com.project.letstalk;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -23,6 +26,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.hbb20.CountryCodePicker;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -30,17 +34,26 @@ import java.util.concurrent.TimeUnit;
 
 public class LoginActivity extends AppCompatActivity {
 
+    private Toolbar mToolbar;
+
     private EditText mPhoneNumber, mCode;
     private Button mSend;
 
     private PhoneAuthProvider.OnVerificationStateChangedCallbacks mCallbacks;
 
+    String number;
+    CountryCodePicker ccp;
     String mVerificationId;
 
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        mToolbar = (Toolbar) findViewById(R.id.login_page_toolbar);
+        setSupportActionBar(mToolbar);
+        getSupportActionBar().setTitle("LetsTalk");
 
         FirebaseApp.initializeApp(this);
 
@@ -50,12 +63,16 @@ public class LoginActivity extends AppCompatActivity {
         mCode = findViewById(R.id.code);
 
         mSend = findViewById(R.id.send);
+        ccp = (CountryCodePicker) findViewById(R.id.ccp);
+        ccp.registerCarrierNumberEditText(mPhoneNumber);
 
         mSend.setOnClickListener(new View.OnClickListener() {
             @Override
 
                 public void onClick (View v){
                 if(!mPhoneNumber.getText().toString().isEmpty()) {
+                    number = ccp.getFullNumberWithPlus();
+
                     if (mVerificationId != null)
                         verifyPhoneNumberWithCode();
                     else
@@ -136,7 +153,7 @@ public class LoginActivity extends AppCompatActivity {
 
     private void startPhoneNumberVerification() {
         PhoneAuthProvider.getInstance().verifyPhoneNumber(
-                mPhoneNumber.getText().toString(),
+                number,
                 60,
                 TimeUnit.SECONDS,
                 this,

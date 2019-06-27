@@ -7,25 +7,34 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context=".MainPageActivity">
+    
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/appBarLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 
-    <LinearLayout
+        <include
+            android:id="@+id/login_page_toolbar"
+            layout="@layout/app_bar_layout" >
+        </include>
+        
+        <com.google.android.material.tabs.TabLayout
+            android:id="@+id/main_tabs"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:theme = "@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+            android:background="#642030">
+        </com.google.android.material.tabs.TabLayout>
+
+    </com.google.android.material.appbar.AppBarLayout>
+    
+    <androidx.viewpager.widget.ViewPager
+        android:id="@+id/main_tabs_pager"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        tools:ignore="MissingConstraints">
+        android:layout_below = "@+id/appBarLayout">
 
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Contacts"
-            android:id="@+id/findUser"/>
-
-
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="logout"
-            android:id="@+id/logout"/>
-    </LinearLayout>
+    </androidx.viewpager.widget.ViewPager>
 
     <androidx.recyclerview.widget.RecyclerView
         android:layout_width="match_parent"
