@@ -6,6 +6,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.telephony.TelephonyManager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -79,7 +80,7 @@ public class ContactsFragment extends Fragment{
 
             UserObject mContact = new UserObject("", name, phone);
             contactList.add(mContact);
-            getUserDetails(mContact);
+            if(!userList.contains(mContact)) getUserDetails(mContact);
         }
     }
 
@@ -91,15 +92,21 @@ public class ContactsFragment extends Fragment{
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if(dataSnapshot.exists()) {
                     String phone = "", name = "";
+                    UserObject mUser = null;
                     userList.clear();
                     for(DataSnapshot childSnapshot : dataSnapshot.getChildren()) {
+
+
+                        Log.d("contactData", "onDataChange: " + dataSnapshot);
+
+                        Log.d("contact", "onDataChange: " + childSnapshot);
 
                         if(childSnapshot.child("phone").getValue() != null)
                             phone = childSnapshot.child("phone").getValue().toString();
                         if(childSnapshot.child("name").getValue() != null)
                             name = childSnapshot.child("name").getValue().toString();
 
-                        UserObject mUser = new UserObject(childSnapshot.getKey(), name, phone);
+                        mUser = new UserObject(childSnapshot.getKey(), name, phone);
                         if(name.equals(phone)) {
                             for(UserObject mContactIterator : contactList) {
                                 if(mContactIterator.getPhone().equals(mUser.getPhone())) {
@@ -109,12 +116,15 @@ public class ContactsFragment extends Fragment{
                         }
 
 
-                        userList.add(mUser);
-                        mUserListAdapter = new UserListAdapter(getActivity(), userList);
-                        mUserList.setAdapter(mUserListAdapter);
-                      //  mUserListAdapter.notifyDataSetChanged();
-                        return;
+                        if(mUser != null && !userList.contains(mUser)) {
+                            userList.add(mUser);
+
+                        }
+
                     }
+                    mUserListAdapter = new UserListAdapter(getActivity(), userList);
+                    mUserList.setAdapter(mUserListAdapter);
+                  //  mUserListAdapter.notifyDataSetChanged();
                 }
             }
 
@@ -142,8 +152,8 @@ public class ContactsFragment extends Fragment{
         mUserList.setHasFixedSize(false);
         mUserListLayoutManager = new LinearLayoutManager(getActivity().getApplicationContext(), LinearLayout.VERTICAL, false);
         mUserList.setLayoutManager(mUserListLayoutManager);
-     //   mUserListAdapter = new UserListAdapter(userList);
-      //  mUserList.setAdapter(mUserListAdapter);
+       // mUserListAdapter = new UserListAdapter(getActivity(), userList);
+        //mUserList.setAdapter(mUserListAdapter);
     }
 
 

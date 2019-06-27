@@ -102,7 +102,7 @@ public class ChatActivity extends AppCompatActivity {
 
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                    Object obj = dataSnapshot.getValue();
+       //             Object obj = dataSnapshot.getValue();
                     UserObject user = dataSnapshot.getValue(UserObject.class);
 
                     readMessages(fuser.getUid(), userid);

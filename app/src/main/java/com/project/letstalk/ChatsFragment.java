@@ -113,7 +113,7 @@ public class ChatsFragment extends Fragment {
 
                 userAdapter = new UserListAdapter(getContext(), mUsers, true);
                 recyclerView.setAdapter(userAdapter);
-                return;
+
             }
 
             @Override
@@ -130,7 +130,7 @@ public class ChatsFragment extends Fragment {
         String[] projection = new String[]{ContactsContract.PhoneLookup.DISPLAY_NAME};
 
         String contactName="";
-        Cursor cursor=context.getContentResolver().query(uri,projection,null,null,null);
+        Cursor cursor = context.getContentResolver().query(uri,projection,null,null,null);
 
         if (cursor != null) {
             if(cursor.moveToFirst()) {
